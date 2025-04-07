@@ -6,25 +6,25 @@ import java.util.function.Function;
 
 public class Map<A,B> implements Query<A,B> {
 
-	// TODO
+	Function<A,B> op;
 
 	public Map(Function<A,B> op) {
-		// TODO
+		this.op = op;
 	}
 
 	@Override
 	public void start(Sink<B> sink) {
-		// TODO
+		// Nothing to do
 	}
 
 	@Override
 	public void next(A item, Sink<B> sink) {
-		// TODO
+        sink.next(op.apply(item));
 	}
 
 	@Override
 	public void end(Sink<B> sink) {
-		// TODO
+		sink.end();
 	}
 	
 }
