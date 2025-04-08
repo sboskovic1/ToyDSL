@@ -23,12 +23,14 @@ public class Pipeline<A,B,C> implements Query<A,C> {
 
 	@Override
 	public void next(A item, Sink<C> sink) {
-		// TODO
+		q1.next(item, sink1);
+        q2.next(sink1.last, sink);
 	}
 
 	@Override
 	public void end(Sink<C> sink) {
-		// TODO
+		q1.end(sink1);
+        sink.end();
 	}
 	
 }
