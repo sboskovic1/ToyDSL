@@ -1,6 +1,8 @@
 package dsl;
 
 import java.util.function.BinaryOperator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 // Efficient algorithm for aggregation over a sliding window.
 // It assumes that there is a 'remove' operation for updating
@@ -8,7 +10,11 @@ import java.util.function.BinaryOperator;
 
 public class SWindowInv<A> implements Query<A,A> {
 
-	// TODO
+	int wndSize;
+    A agg;
+    BinaryOperator<A> insert;
+    BinaryOperator<A> remove;
+    Queue<A> queue;
 
 	public SWindowInv
 	(int wndSize, A init, BinaryOperator<A> insert, BinaryOperator<A> remove)
@@ -16,23 +22,34 @@ public class SWindowInv<A> implements Query<A,A> {
 		if (wndSize < 1) {
 			throw new IllegalArgumentException("window size should be >= 1");
 		}
-		
-		// TODO
+		this.wndSize = wndSize;
+        this.agg = init;
+        this.insert = insert;
+        this.remove = remove;
+        this.queue = new LinkedList<A>();
 	}
 
 	@Override
 	public void start(Sink<A> sink) {
-		// TODO
+		// Do nothing
 	}
 
 	@Override
 	public void next(A item, Sink<A> sink) {
-		// TODO
+		if (queue.size() == wndSize) {
+            A evicted = queue.poll();
+            agg = remove.apply(agg, evicted);
+        }
+        queue.add(item);
+        agg = insert.apply(agg, item);
+        if (queue.size() == wndSize) {
+            sink.next(agg);
+        }
 	}
 
 	@Override
 	public void end(Sink<A> sink) {
-		// TODO
+		sink.end();
 	}
 	
 }

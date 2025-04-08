@@ -374,6 +374,7 @@ public class UTestDSL {
 		q2.start(sink2);
 		while (it.hasNext()) {
 			Integer item = it.next();
+            System.out.println("item: " + item);
 			q1.next(item, sink1);
 			q2.next(item, sink2);
 			assertEquals(sink1.count, sink2.count);
