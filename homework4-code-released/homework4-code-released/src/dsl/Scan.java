@@ -6,25 +6,28 @@ import utils.functions.Func2;
 
 public class Scan<A, B> implements Query<A, B> {
 
-	// TODO
+	B agg;
+    Func2<B,A,B> op;
 
 	public Scan(B init, Func2<B,A,B> op) {
-		// TODO
+		this.agg = init;
+        this.op = op;
 	}
 
 	@Override
 	public void start(Sink<B> sink) {
-		// TODO
+		// Do nothing
 	}
 
 	@Override
 	public void next(A item, Sink<B> sink) {
-		// TODO
+		agg = op.apply(agg, item);
+        sink.next(agg);
 	}
 
 	@Override
 	public void end(Sink<B> sink) {
-		// TODO
+		sink.end();
 	}
 	
 }
