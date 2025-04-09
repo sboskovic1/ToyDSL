@@ -18,6 +18,7 @@ public class Emit<A> implements Query<A,A> {
 
 	@Override
 	public void start(Sink<A> sink) {
+        System.out.println("here");
 		for (int i = 0; i < n; i++) {
             sink.next(value);
         }
